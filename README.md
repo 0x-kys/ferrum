@@ -4,8 +4,10 @@ Implementing a shell to learn Rust.
 
 ### Unique Commands
 
-- `setpath` - add a path
-- `showpath` - shows added paths
+| Command    | Use              | Usage                 |
+| ---------- | ---------------- | --------------------- |
+| `setpath`  | `setpath <path>` | adds a directory path |
+| `showpath` | `showpath`       | show current paths    |
 
 ### ToDo
 
