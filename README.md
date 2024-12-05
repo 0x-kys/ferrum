@@ -11,7 +11,11 @@ Implementing a shell to learn Rust.
 
 ### ToDo
 
-- Fix default paths
-- Add a config file for paths
-- Make Docs
+- TOML config for paths
+- trim subdirectory name to single character
+- add some shorthands for commands like `ls -l` -> `ll`
+- directory and file highlighting
+- tab completion for paths and commands
+- alias for commands
+- make docs
 
