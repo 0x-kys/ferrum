@@ -9,18 +9,29 @@ use std::{
     process::{Child, Command, Stdio},
 };
 
-use path::{add_path, resolve_command, show_paths};
+use ansi_term::Color;
+use commons::trim_path;
 
 use crate::{
     commons::greeter,
     consts::{PIPE, PROMPT, SLASH},
+    path::{add_path, resolve_command, show_paths},
 };
 
 fn main() {
     greeter();
 
+    add_path(&path::predefined_paths());
+
     loop {
-        print!("{}", PROMPT);
+        let current_dir = env::current_dir().unwrap_or_else(|_| Path::new(SLASH).to_path_buf());
+        let prompt = format!(
+            "{} {}",
+            Color::Yellow.paint(trim_path(&current_dir)),
+            Color::Green.bold().paint(PROMPT)
+        );
+
+        print!("{}", prompt);
         let _ = stdout().flush();
 
         let mut input = String::new();
@@ -46,13 +57,16 @@ fn main() {
                     previous_command = None;
                 }
                 "setpath" => {
-                    let new_path = args.peekable().peek().map_or("", |x| *x);
+                    let new_paths = args.map(|s| s.to_string()).collect::<Vec<String>>();
 
-                    if new_path.is_empty() {
-                        eprintln!("Usage: setpath <path>");
+                    if new_paths.is_empty() {
+                        eprintln!("Usage: setpath <path> [<path> ...]");
                     } else {
-                        add_path(new_path);
-                        println!("Path added: {}", new_path);
+                        let path_to_add = new_paths.clone();
+
+                        add_path(&path_to_add);
+
+                        println!("Paths added: {:?}", path_to_add);
                     }
                 }
                 "showpath" => {
@@ -101,3 +115,4 @@ fn main() {
         }
     }
 }
+

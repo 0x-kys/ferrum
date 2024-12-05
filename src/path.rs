@@ -3,7 +3,7 @@ use std::{
     sync::{LazyLock, RwLock},
 };
 
-use crate::consts::PATHS;
+pub const PATHS: [&'static str; 3] = ["/bin", "/usr/bin", "/usr/local/bin"];
 
 static USER_PATHS: LazyLock<RwLock<Vec<String>>> = LazyLock::new(|| RwLock::new(Vec::new()));
 
@@ -32,17 +32,22 @@ pub fn resolve_command(command: &str) -> Option<PathBuf> {
     None
 }
 
-pub fn add_path(new_path: &str) {
+pub fn add_path(new_paths: &Vec<String>) {
     let mut paths = USER_PATHS.write().unwrap();
 
-    if !paths.contains(&new_path.to_string()) {
-        paths.push(new_path.to_string());
+    for path in new_paths {
+        if !paths.contains(&path) {
+            paths.push(path.to_string());
+        }
     }
+}
+
+pub fn predefined_paths() -> Vec<String> {
+    PATHS.iter().map(|&s| s.to_string()).collect()
 }
 
 pub fn show_paths() {
     let paths = USER_PATHS.read().unwrap();
-
     for path in paths.iter() {
         println!("{}", path);
     }
