@@ -11,11 +11,12 @@ Implementing a shell to learn Rust.
 
 ### ToDo
 
-- TOML config for paths
+- TOML config for paths, prompt colors
 - trim subdirectory name to single character
 - add some shorthands for commands like `ls -l` -> `ll`
 - directory and file highlighting
 - tab completion for paths and commands
 - alias for commands
+- custom prompts and colors
 - make docs
 
